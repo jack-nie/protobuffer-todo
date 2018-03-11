@@ -6,10 +6,10 @@ import (
 	"flag"
 	"fmt"
 	"github.com/golang/protobuf/proto"
+	"github.com/jack-nie/protobuffer-todo/todo"
 	"io/ioutil"
 	"os"
 	"strings"
-	"todo/todo"
 )
 
 func main() {
@@ -34,6 +34,15 @@ func main() {
 		os.Exit(1)
 	}
 }
+
+type length int64
+
+const (
+	sizeOfLength = 8
+	dbPath       = "mydb.pb"
+)
+
+var endianness = binary.LittleEndian
 
 func list() error {
 	b, err := ioutil.ReadFile(dbPath)
@@ -69,15 +78,6 @@ func list() error {
 
 	}
 }
-
-type length int64
-
-const (
-	sizeOfLength = 8
-	dbPath       = "mydb.pb"
-)
-
-var endianness = binary.LittleEndian
 
 func add(text string) error {
 	task := &todo.Task{
